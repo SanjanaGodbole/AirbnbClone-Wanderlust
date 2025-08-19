@@ -1,0 +1,56 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wanderlust</title>
+</head>
+<body> -->
+<% layout("/layouts/boilerplate")%>
+<h3>Edit following listing</h3>
+<form method="POST" action="/listings/<%=listingData._id%>?_method=PUT" novalidate class="needs-validation">
+
+<div class="mb-3">
+<label for="title" class="form-label">Title</label>
+<input name=listing[title] value="<%=listingData.title%>"  id="title" type="text" class="form-control" required/>
+<div class="valid-feedback">
+Title Looks good!
+</div>
+<div class="invalid-feedback">
+Enter Valid Title
+</div>
+</div>
+
+
+<div class="mb-3">
+<label for="description" class="form-label">Description</label>
+<textarea name=listing[description] class="form-control" id="description"><%=listingData.description%></textarea>
+</div>
+
+<div class="mb-3">
+<label for="url" class="form-label">URL</label>
+<input name=listing[image] value="<%=listingData.image.url%>" type="text" id="image" class="form-control"/>
+</div>
+
+<div class="row">
+<div class="mb-3 col-md-4">
+<label for="location" class="form-label">Location</label>
+<input name=listing[location] value="<%=listingData.location%>" type="text" id="location" class="form-control"/>
+</div>
+
+<div class="mb-3 col-md-8">
+<label for="number" class="form-label">Price</label>
+<input name=listing[price] value="<%=listingData.price%>" type="number" id="price" class="form-control"/>
+</div>
+</div>
+
+<div class="mb-3">
+<label for="country" class="form-label">Country</label>
+<input name=listing[country] value="<%=listingData.country%>" type="text" id="country" class="form-control"/>
+</div>
+
+
+<button class="edit-btn btn btn-dark">Edit</button>
+ </form>
+<!-- </body>
+</html> -->
