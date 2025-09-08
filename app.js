@@ -6,8 +6,30 @@ const mongoose=require("mongoose");
 const methodOverride = require('method-override');
 
 
+//Associate session with application
+const session=require("express-session");
+const flash=require("connect-flash");
+const sessionOptions={
+    secret:"secretcode",
+    resave:"false",
+    saveUninitialized:false,
+    cookie:{
+       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        httpOnly:true //to prevent from cross scripting attack        
+    }
+}
+app.use(session(sessionOptions));
+app.use(flash());//always before routes
+
 const listenings=require("./routes/listings.js");
 const reviews=require("./routes/reviews.js");
+
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
+    next();
+})
 
 //to setup ejs
 const path=require("path");
