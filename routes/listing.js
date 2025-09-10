@@ -73,7 +73,15 @@ router.post("/",wrapAsync(async(req,res,next)=>{
 router.get("/:id/edit",async(req,res)=>{
     const {id}=req.params;
    let listingData=await Listing.findById(id);
+    if(!listingData)
+   {
+      req.flash("error","Listing you requested for doesnot exits");
+      res.redirect("/listings")
+
+   }
+   else{
     res.render("listings/edit.ejs",{listingData});
+   }
 })
 
 //2.Update Route to save edited data about propert into Mongo DB

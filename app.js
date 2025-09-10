@@ -6,9 +6,20 @@ const mongoose=require("mongoose");
 const methodOverride = require('method-override');
 
 
+
+
+
 //Associate session with application
 const session=require("express-session");
 const flash=require("connect-flash");
+
+
+//Passport-Authentication setup
+const passport=require("passport");
+const LocalStrategy=require("passport-local").Strategy;
+const User=require("./models/user.js");
+
+
 const sessionOptions={
     secret:"secretcode",
     resave:"false",
@@ -22,14 +33,23 @@ const sessionOptions={
 app.use(session(sessionOptions));
 app.use(flash());//always before routes
 
-const listenings=require("./routes/listings.js");
-const reviews=require("./routes/reviews.js");
+//We need session to implement Passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());//store user related info into session
+passport.deserializeUser(User.deserializeUser());//remove user related infor from session
+
+const listingRouter=require("./routes/listing.js");
+const reviewsRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js")
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
     next();
 })
+
 
 //to setup ejs
 const path=require("path");
@@ -84,10 +104,23 @@ connectDB();
 
 //////////// Express Routes for Listings //////////////////////
 
-app.use("/listings",listenings);
-app.use("/listings/:id/reviews",reviews);
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewsRouter);
+app.use("/",userRouter);
 
 ///////////////////////////////////////////////////////////////
+
+app.get("/demoUser",async(req,res)=>{
+    let fakeUser=new User({
+        email:"student@gmail.com",
+        username:"deltaStudent"
+    })
+
+    const registeredUser=await User.register(fakeUser,"password");
+    res.send(registeredUser);
+//Convenience method of passport-local-mongoose to register a new user instance with a given password. Checks if username is unique. 
+})
+
 
 
 //////////////////////Page Not Fount(Route is not defined)/////////////Not Working Need to check
