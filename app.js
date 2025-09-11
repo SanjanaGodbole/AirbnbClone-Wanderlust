@@ -110,16 +110,16 @@ app.use("/",userRouter);
 
 ///////////////////////////////////////////////////////////////
 
-app.get("/demoUser",async(req,res)=>{
-    let fakeUser=new User({
-        email:"student@gmail.com",
-        username:"deltaStudent"
-    })
+// app.get("/demoUser",async(req,res)=>{
+//     let fakeUser=new User({
+//         email:"student@gmail.com",
+//         username:"deltaStudent"
+//     })
 
-    const registeredUser=await User.register(fakeUser,"password");
-    res.send(registeredUser);
-//Convenience method of passport-local-mongoose to register a new user instance with a given password. Checks if username is unique. 
-})
+//     const registeredUser=await User.register(fakeUser,"password");
+//     res.send(registeredUser);
+// //Convenience method of passport-local-mongoose to register a new user instance with a given password. Checks if username is unique. 
+// })
 
 
 
