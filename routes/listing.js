@@ -7,6 +7,8 @@ const ExpressError=require("../utils/ExpressError.js");
 
 const Listing=require("../models/listing");
 
+const {isLoggedIn}=require("../middlewear.js")
+
 //Routes for Listing
 //Index route
 
@@ -29,7 +31,7 @@ router.get("/", async (req, res) => {
 
 //Create new property
 // 1.New Route- To display form to get details about new property
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listings/new.ejs")
 })
 
@@ -85,7 +87,7 @@ router.get("/:id/edit",async(req,res)=>{
 })
 
 //2.Update Route to save edited data about propert into Mongo DB
-router.put("/:id",async(req,res)=>{
+router.put("/:id",isLoggedIn,async(req,res)=>{
     const {id}=req.params;
     const listingData = req.body.listing;
 
@@ -121,7 +123,7 @@ router.delete("/:id",async(req,res)=>{
 
 //Show route- READ operation to dsplay detail info of selected proeprty(using id) from listings
 //This request is coming from anchor tag, which always send GET request when clicked
-router.get("/:id",async(req,res)=>{
+router.get("/:id",isLoggedIn,async(req,res)=>{
    // const listingId = req.params.id;
    const {id}=req.params;
    let listingData=await Listing.findById(id).populate("reviews");

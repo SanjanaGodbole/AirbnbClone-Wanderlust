@@ -40,15 +40,19 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());//store user related info into session
 passport.deserializeUser(User.deserializeUser());//remove user related infor from session
 
-const listingRouter=require("./routes/listing.js");
-const reviewsRouter=require("./routes/review.js");
-const userRouter=require("./routes/user.js")
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
+    res.locals.activeUser=req.user;
     next();
 })
+
+
+const listingRouter=require("./routes/listing.js");
+const reviewsRouter=require("./routes/review.js");
+const userRouter=require("./routes/user.js")
+
 
 
 //to setup ejs
